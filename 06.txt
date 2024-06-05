@@ -1,0 +1,13 @@
+participant browser
+participant server
+
+browser->>server: POST ./new_note_spa content-type: application/json
+activate server
+server->>browser: 201: message: "note created"
+deactivate server
+
+//No additional requests are being made
+server is handling insert with event handler
+event handler receives and pushes the new note to 
+the list/element of notes.
+Then calls redrawNotes method to show in browser

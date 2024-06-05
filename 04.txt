@@ -1,0 +1,30 @@
+participant browser
+participant server
+
+browser->>server: POST ./new_note
+activate server
+server->>browser: 302, redirect: GET ./notes
+deactivate server
+
+browser->>server: GET ./notes
+activate server
+server->>browser: HTML document
+deactivate server
+
+//copied from assignment due to the same calls are being made after POST update
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+activate server
+server-->>browser: the css file
+deactivate server
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+activate server
+server-->>browser: the JavaScript file
+deactivate server
+
+
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+activate server
+server-->>browser: [{ "content": {whatever was in the submit body}, "date": {current date by new date() method}}, ... ]
+deactivate server
