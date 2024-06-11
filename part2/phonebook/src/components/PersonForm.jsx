@@ -1,21 +1,30 @@
 import { useState } from 'react'
 
-const PersonForm = ({persons, setPersons}) => {
+const PersonForm = ({persons, setPersons, phoneService}) => {
     const [newName, setnewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
 
     const onSubmitHandle = (event) => {
         event.preventDefault();
         const newAdd = {
+          id: undefined,
           name: newName,
           number: newNumber,
-          id: persons.length+1
         }
         if (persons.map(persons => persons.name).includes(newName)){
-          alert(newName + " is already added to the phonebook");
+
+          if (window.confirm(newName + " is already added to the phonebook, do you want to update the phone number?")){
+            let findId = persons.filter(persons => persons.name===newName)
+            
+            phoneService.update(findId[0].id, newAdd)
+              .then(returnedObject => { setPersons(persons.map(persons => persons.id !== findId[0].id ? persons : returnedObject))});
+          }
+          setnewName("");
+          setNewNumber("");
         }
         else {
-          setPersons(persons.concat(newAdd));
+          phoneService.create(newAdd).then(returnedName => 
+          setPersons(persons.concat(returnedName)));
           setnewName("");
           setNewNumber("");
         }
@@ -23,7 +32,7 @@ const PersonForm = ({persons, setPersons}) => {
     
       const addName = (event) => {
         event.preventDefault()
-        setnewName(event.target.value);
+        setnewName(event.target.value)
       }
     
       const addNumber = (event) => {

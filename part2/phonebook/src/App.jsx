@@ -1,30 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Number from './components/Numbers'
 import PersonForm from './components/PersonForm'
 import FilterPhonebook from './components/FilterPhonebook'
+import axios from 'axios'
+import phoneService from './services/numbers'
 
 const App = () => {
 
   //States
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [search, setSearch] = useState();
   const [filterState, setFilterState] = useState(false);
 
-  const addFilter = (event) => {
-    event.preventDefault()
-      if (event.target.value != "") {
-        setFilterState(true);
-      }
-      else {
-        setFilterState(false);
-      }
-    setSearch(event.target.value);
-  }
+useEffect(() => {
+    phoneService
+      .getAll()
+      .then(phoneBook => {
+        setPersons(phoneBook);
+      })
+  }, [])
 
   /*
     Check this function and how it works some more.
@@ -48,13 +42,18 @@ const App = () => {
       
       <h1>Add a new</h1>
 
-        <PersonForm persons={persons} setPersons={setPersons}/>
+        <PersonForm persons={persons} setPersons={setPersons} phoneService={phoneService}/>
       
       <h2>Numbers</h2>
       <div>
-        {filteredNumbers.map(persons =>
-        <Number key={persons.id}
-          name={persons.name} number={persons.number}
+        {filteredNumbers.map(person =>
+        <Number key={person.id}
+            id={person.id}
+            name={person.name} 
+            number={person.number} 
+            phoneService={phoneService} 
+            setPersons={setPersons}
+            persons={persons}
         />)}
         </div>
     </div>
