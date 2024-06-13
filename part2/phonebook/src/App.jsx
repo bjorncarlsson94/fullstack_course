@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Number from './components/Numbers'
 import PersonForm from './components/PersonForm'
 import FilterPhonebook from './components/FilterPhonebook'
+import Notification from './components/Notification'
 import axios from 'axios'
 import phoneService from './services/numbers'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
   const [search, setSearch] = useState();
   const [filterState, setFilterState] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
 useEffect(() => {
     phoneService
@@ -37,12 +39,16 @@ useEffect(() => {
   return (
     <div>
       <h2>Phonebook</h2>
-      
+        <Notification message={errorMessage}/>
         <FilterPhonebook setFilterState={setFilterState} setSearch={setSearch}/>
       
       <h1>Add a new</h1>
 
-        <PersonForm persons={persons} setPersons={setPersons} phoneService={phoneService}/>
+        <PersonForm 
+          persons={persons} 
+          setPersons={setPersons} 
+          phoneService={phoneService}
+          setErrorMessage={setErrorMessage}/>
       
       <h2>Numbers</h2>
       <div>
@@ -54,6 +60,7 @@ useEffect(() => {
             phoneService={phoneService} 
             setPersons={setPersons}
             persons={persons}
+            setErrorMessage={setErrorMessage}
         />)}
         </div>
     </div>

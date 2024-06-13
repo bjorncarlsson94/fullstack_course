@@ -8,7 +8,15 @@ const Number = (props) => {
                     props.setPersons(
                     props.persons
                     .filter(person => person.id !== props.id))
-            )
+            ).then (() => {
+                props.setErrorMessage("Deleted contact " + props.name)
+                setTimeout(()=>{
+                  props.setErrorMessage(null)}, 5000)
+              })
+              .catch(()=> {props.setErrorMessage("Deletion of " + props.name + " failed")
+              setTimeout(()=>{
+                props.setErrorMessage(null)}, 5000)
+            });
         }   
     }
 

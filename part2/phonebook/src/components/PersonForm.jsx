@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const PersonForm = ({persons, setPersons, phoneService}) => {
+const PersonForm = ({persons, setPersons, phoneService, setErrorMessage}) => {
     const [newName, setnewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
 
@@ -14,17 +14,30 @@ const PersonForm = ({persons, setPersons, phoneService}) => {
         if (persons.map(persons => persons.name).includes(newName)){
 
           if (window.confirm(newName + " is already added to the phonebook, do you want to update the phone number?")){
-            let findId = persons.filter(persons => persons.name===newName)
-            
-            phoneService.update(findId[0].id, newAdd)
-              .then(returnedObject => { setPersons(persons.map(persons => persons.id !== findId[0].id ? persons : returnedObject))});
+            let findId = persons.find(persons => persons.name===newName)
+            phoneService.update(findId.id, newAdd)
+              .then(returnedObject => { setPersons(persons.map(persons => persons.id !== findId.id ? persons : returnedObject))})
+              .then (() => {
+                setErrorMessage("Updated the number of " + newName)
+                setTimeout(()=>{
+                  setErrorMessage(null)}, 5000)
+              })
+              .catch(() => {setErrorMessage("Update of " + newName + " failed")
+                setTimeout(()=>{
+                  setErrorMessage(null)}, 5000)
+            });
           }
+          
           setnewName("");
           setNewNumber("");
         }
         else {
           phoneService.create(newAdd).then(returnedName => 
-          setPersons(persons.concat(returnedName)));
+          setPersons(persons.concat(returnedName)))
+            .then(setErrorMessage("Created " + newAdd.name))
+            setTimeout(()=>{
+              setErrorMessage(null)}, 5000);
+              
           setnewName("");
           setNewNumber("");
         }
