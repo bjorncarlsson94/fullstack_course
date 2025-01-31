@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react';
-import axios from 'axios';
 import Note from './components/Note';
 import noteService from './services/notes'
 import Notification from './components/Notification';
@@ -37,6 +36,7 @@ const App = (props) => {
 
     noteService.update(id, changedNote).then(returnedNote => {
       setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+      console.log("Returned note is: ", returnedNote);
     })
     .catch(error => { 
       setErrorMessage(
@@ -45,7 +45,7 @@ const App = (props) => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      setNotes(notes.filter(n => n.id !== id))
+    //  setNotes(notes.filter(n => n.id !== id))
     })
   }
 
