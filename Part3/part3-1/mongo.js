@@ -3,8 +3,9 @@ const mongoose = require('mongoose')
 const inputName = process.argv[3]
 const inputNumber = process.argv[4]
 
-const url =
+const url = 
 mongoose.set('strictQuery',false)
+
 
 mongoose.connect(url)
 
@@ -13,7 +14,7 @@ const phonebookSchema = new mongoose.Schema({
   number: String,
 })
 
-const PhoneEntry = mongoose.model('Note', phonebookSchema)
+const PhoneEntry = mongoose.model('phoneEntry', phonebookSchema)
 
 const entry = new PhoneEntry({
   name: inputName,
