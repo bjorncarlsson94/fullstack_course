@@ -49,12 +49,15 @@ const App = (props) => {
         //  setNotes(notes.filter(n => n.id !== id))
       });
   };
-  const deleteNote = (id) => {
-    const note = notes.find((n) => n.id === id);
+  // const deleteNote = (id) => {
+  //   const note = notes.find((n) => n.id === id);
+  //   console.log("We're deleting: ", note);
 
-    noteService.delete(id).then(returnedNote);
-    setNotes(notes.filter((note) => note.id !== id));
-  };
+  //   noteService
+  //     .deleteNote(id)
+  //     .then(setNotes(notes.filter((note) => note.id !== id)))
+  //     .then();
+  // };
 
   const handleNoteChange = (event) => {
     //console.log(event.target.value);
@@ -77,7 +80,11 @@ const App = (props) => {
             key={note.id}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
-            delete={() => deleteNote(note.id)}
+            //deleteNote={() => deleteNote(note.id)}
+            setErrorMessage={setErrorMessage}
+            setNotes={setNotes}
+            notes={notes}
+            noteService={noteService}
           />
         ))}
       </ul>

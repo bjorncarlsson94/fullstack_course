@@ -17,7 +17,7 @@ const update = (id, newObject) => {
 }
 
 const deleteNote = (id) => {
-  const request = axios.delete(`${baserURL}/${id}`)
+  const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data)
 }
 

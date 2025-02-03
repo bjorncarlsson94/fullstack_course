@@ -29,3 +29,32 @@ Content-Type: application/json
     "name": "Bjorn Carlsson2",
     "number": "010099-119"
 }
+
+###
+
+PUT http://localhost:3002/api/persons/679fc4819afd4ecedd900fc4
+Content-Type: application/json
+
+{
+    "name": "new",
+    "number": "4444444"
+}
+
+###
+
+POST http://localhost:3002/api/persons
+Content-Type: application/json
+
+{
+    "name": "new2",
+    "number": "4444444"
+}
+
+###
+PUT http://localhost:3001/api/notes/679fee813e4fcbb1950db59b
+Content-Type: application/json
+
+{
+    "content": "forPut",
+    "important": "false"
+}
