@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRoaXJkVXNlciIsImlkIjoiNjdhNjU3MDc1MDMzMTgwY2E5MzRlZTQ2IiwiaWF0IjoxNzM4OTU2NDg2LCJleHAiOjE3Mzg5NjAwODZ9.Fd9p3VgrSWrbXC7FIMku8ogw7MAqDHYU9mF13DWBHv4
+Authorization: 
 
 {
     "title": "final test one",
@@ -21,7 +21,4 @@ Content-Type: application/json
 
 DELETE http://localhost:3001/api/blogs/67a6570f5033180ca934ee55
 Content-Type: application/json
-//First user
-//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZpcnN0VXNlciIsImlkIjoiNjdhNjUyNDg0Y2IzOTIwYjdkMzhiN2FhIiwiaWF0IjoxNzM4OTU4MDk2fQ.a2UyHPvEC7pvxh3fY4bkIHAUIYy8zV_jbolwkUkdP3Y
-//Third user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRoaXJkVXNlciIsImlkIjoiNjdhNjU3MDc1MDMzMTgwY2E5MzRlZTQ2IiwiaWF0IjoxNzM4OTU5MjgyfQ.Q7FgM44XGPpMmTh9jdwoWavy6HGJyqcUgeyNNzha9uw
+Authorization:
