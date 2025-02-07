@@ -4,8 +4,10 @@ GET http://localhost:3001/api/notes
 
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3R5Ym9pIiwiaWQiOiI2N2E1MzNjZTg0ZDgxOTQ0NjYwYjNmNDUiLCJpYXQiOjE3Mzg5MzI5NjZ9.uRGXt09Zs5dJaaHUpT1KrsYxAncqRNaYSgwVV3bjtNw
 
 {
-    "content": "VS code rest client is good",
-    "important": true
+    "content": "Second note is easier to add",
+    "important": false,
+    "userId": "67a533ce84d81944660b3f45"
 }

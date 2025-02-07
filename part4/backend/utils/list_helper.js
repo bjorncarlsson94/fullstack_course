@@ -1,4 +1,5 @@
 var _ = require('lodash')
+const User = require('../../../Part3/notesBackEnd_fullstack/models/user')
 
 const listWithThreeeBlogs = [
   {
@@ -30,14 +31,14 @@ const listWithThreeeBlogs = [
     __v: 0,
   },
   {
-    title: 'WHO?',
+    title: 'WHY?',
     author: 'No one',
     url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
     likes: 2,
     __v: 0,
   },
   {
-    title: 'WHO?',
+    title: 'WHEN?',
     author: 'No one',
     url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
     likes: 38,
@@ -115,6 +116,11 @@ const mostLikes = (blogs) => {
   }
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map((user) => user.toJSON())
+}
+
 module.exports = {
   dummy,
   totalLikes,
@@ -126,4 +132,5 @@ module.exports = {
   newBlogNoLikes,
   listWithOneBlog,
   newBlogNoTitle,
+  usersInDb,
 }
