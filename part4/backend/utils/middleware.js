@@ -13,7 +13,7 @@ const tokenExtractor = (request, response, next) => {
   const authorization = request.get('Authorization')
   if (authorization && authorization.startsWith('Bearer ')) {
     request.token = authorization.replace('Bearer ', '')
-  } else if (!authorization) {
+  } else if (request.method === 'POST' && !authorization) {
     return response.status(401).json({ error: 'Unauthorized' })
   }
   next()
