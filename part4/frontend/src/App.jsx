@@ -1,34 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
+import Blog from './components/Blog'
+import blogService from './services/blogService'
+import LoginForm from './components/LoginForm'
+import LogoutButton from './components/LogoutButton'
+import BlogForm from './components/newBlog'
+import Notification from './components/Notification'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState(null)
+
+  useEffect(() => {
+    blogService.getAll().then((blogs) => setBlogs(blogs))
+  }, [])
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedInBlogUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <h2>blogs</h2>
+      <Notification message={message} />
+      {!user ? (
+        <LoginForm
+          setUsername={setUsername}
+          username={username}
+          password={password}
+          setPassword={setPassword}
+          setUser={setUser}
+          setMessage={setMessage}
+        />
+      ) : (
+        <div>
+          {user.name} logged in
+          <LogoutButton
+            setUser={setUser}
+            setUsername={setUsername}
+            setPassword={setPassword}
+          />
+          <BlogForm setBlogs={setBlogs} blogs={blogs} setMessage={setMessage} />
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
