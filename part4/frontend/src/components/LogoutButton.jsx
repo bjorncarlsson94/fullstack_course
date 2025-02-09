@@ -4,8 +4,6 @@ const LogoutButton = ({ setUser, setUsername, setPassword }) => {
     window.localStorage.removeItem('loggedInBlogUser')
 
     setUser(null)
-    setUsername('')
-    setPassword('')
   }
   return (
     <div style={{ margin: '5px' }}>

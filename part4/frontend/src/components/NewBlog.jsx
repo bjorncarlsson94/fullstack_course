@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogService'
 
-const BlogForm = ({ setBlogs, blogs, setMessage }) => {
+const BlogForm = ({ setBlogs, blogs, setMessage, blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setURL] = useState('')
@@ -14,10 +14,8 @@ const BlogForm = ({ setBlogs, blogs, setMessage }) => {
         author: author,
         url: url,
       })
-      setBlogs([
-        ...blogs,
-        { id: response.data.id, title: title, author: author, url: url },
-      ])
+      setBlogs([...blogs, response.data])
+      blogFormRef.current.toggleVisibility()
       setTitle('')
       setAuthor('')
       setURL('')

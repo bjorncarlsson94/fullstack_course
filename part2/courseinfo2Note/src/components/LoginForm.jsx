@@ -1,14 +1,11 @@
+import { useState } from 'react'
 import loginService from '../services/login'
 import noteService from '../services/notes'
 
-const LoginForm = ({
-  setUsername,
-  username,
-  password,
-  setPassword,
-  setUser,
-  setErrorMessage,
-}) => {
+const LoginForm = ({ setUser, setErrorMessage }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
   const handleLogin = async (event) => {
     event.preventDefault()
 

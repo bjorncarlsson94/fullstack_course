@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Note from './components/Note'
 import noteService from './services/notes'
 import Notification from './components/Notification'
@@ -6,14 +6,12 @@ import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
 import NoteForm from './components/NoteForm'
 import LogoutButton from './components/LogoutButton'
+import Togglable from './components/Togglable'
 
 const App = (props) => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -30,16 +28,13 @@ const App = (props) => {
     }
   }, [])
 
-  const addNote = async (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5,
-    }
-    const returnedNote = await noteService.create(noteObject)
+  const noteFormRef = useRef()
 
-    setNotes(notes.concat(returnedNote))
-    setNewNote('')
+  const addNote = (noteObject) => {
+    noteFormRef.current.toggleVisibility()
+    noteService.create(noteObject).then((returnedNote) => {
+      setNotes(notes.concat(returnedNote))
+    })
   }
 
   const toggleImportanceOf = (id) => {
@@ -63,10 +58,6 @@ const App = (props) => {
       })
   }
 
-  const handleNoteChange = (event) => {
-    //console.log(event.target.value);
-    setNewNote(event.target.value)
-  }
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
 
   return (
@@ -74,23 +65,16 @@ const App = (props) => {
       <h1>Important Notes</h1>
       <Notification message={errorMessage} />
       {user === null ? (
-        <LoginForm
-          setUsername={setUsername}
-          username={username}
-          password={password}
-          setPassword={setPassword}
-          setUser={setUser}
-          setErrorMessage={setErrorMessage}
-        />
+        <Togglable buttonLabel="login">
+          <LoginForm setErrorMessage={setErrorMessage} setUser={setUser} />
+        </Togglable>
       ) : (
         <div>
           <p>{user.name} logged-in</p>
-          <NoteForm addNote={addNote} handleNoteChange={handleNoteChange} />
-          <LogoutButton
-            setUser={setUser}
-            setUsername={setUsername}
-            setPassword={setPassword}
-          />
+          <Togglable buttonLabel="Add new note" ref={noteFormRef}>
+            <NoteForm createNote={addNote} />
+          </Togglable>
+          <LogoutButton setUser={setUser} />
         </div>
       )}
       <div>

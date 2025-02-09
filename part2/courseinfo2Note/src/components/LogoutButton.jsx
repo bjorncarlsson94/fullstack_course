@@ -1,11 +1,9 @@
-const LogoutButton = ({ setUser, setUsername, setPassword }) => {
+const LogoutButton = ({ setUser }) => {
   const handleLogout = async (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedNoteappUser')
 
     setUser(null)
-    setUsername('')
-    setPassword('')
   }
   return (
     <button type="submit" onClick={handleLogout}>
