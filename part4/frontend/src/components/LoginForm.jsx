@@ -3,11 +3,6 @@ import loginService from '../services/loginService'
 import blogService from '../services/blogService'
 import PropTypes from 'prop-types'
 
-LoginForm.PropTypes = {
-  setUser: PropTypes.object.isRequired,
-  setMessage: PropTypes.object.isRequired,
-}
-
 const LoginForm = ({ setUser, setMessage }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -52,4 +47,9 @@ const LoginForm = ({ setUser, setMessage }) => {
     </form>
   )
 }
+LoginForm.PropTypes = {
+  setUser: PropTypes.object.isRequired,
+  setMessage: PropTypes.object.isRequired,
+}
+
 export default LoginForm

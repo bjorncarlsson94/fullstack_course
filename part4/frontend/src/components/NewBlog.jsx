@@ -1,7 +1,13 @@
 import { useState } from 'react'
 import blogService from '../services/blogService'
 
-const BlogForm = ({ setBlogs, blogs, setMessage, blogFormRef }) => {
+const BlogForm = ({
+  setBlogs,
+  blogs,
+  setMessage,
+  blogFormRef,
+  createBlogEntry,
+}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setURL] = useState('')
@@ -9,12 +15,12 @@ const BlogForm = ({ setBlogs, blogs, setMessage, blogFormRef }) => {
   const handleBlogCreation = async (event) => {
     event.preventDefault()
     try {
-      const response = await blogService.create({
+      const response = await createBlogEntry({
         title: title,
         author: author,
         url: url,
       })
-      setBlogs([...blogs, response.data])
+      await setBlogs([...blogs, response.data])
       blogFormRef.current.toggleVisibility()
       setTitle('')
       setAuthor('')
@@ -35,13 +41,19 @@ const BlogForm = ({ setBlogs, blogs, setMessage, blogFormRef }) => {
   return (
     <div>
       <h2>Create new blog entry</h2>
-      <form onSubmit={handleBlogCreation}>
+      <form
+        onSubmit={(event) => {
+          //handleBlogCreation(event)
+          handleBlogCreation(event, { title: title, author: author, url: url })
+        }}
+      >
         <div style={{ margin: '5px' }}>
           Title{' '}
           <input
             type="text"
             value={title}
             name="title"
+            placeholder="title"
             onChange={({ target }) => setTitle(target.value)}
           ></input>
         </div>
@@ -51,6 +63,7 @@ const BlogForm = ({ setBlogs, blogs, setMessage, blogFormRef }) => {
             type="text"
             value={author}
             name="author"
+            placeholder="author"
             onChange={({ target }) => setAuthor(target.value)}
           ></input>
         </div>
@@ -60,6 +73,7 @@ const BlogForm = ({ setBlogs, blogs, setMessage, blogFormRef }) => {
             type="text"
             value={url}
             name="url"
+            placeholder="url"
             onChange={({ target }) => setURL(target.value)}
           ></input>
         </div>

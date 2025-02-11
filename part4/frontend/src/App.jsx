@@ -29,6 +29,11 @@ function App() {
     setBlogs((prevBlogs) => [...prevBlogs].sort((a, b) => b.likes - a.likes))
   }
 
+  const createBlogEntry = async (blogObject) => {
+    const response = await blogService.create(blogObject)
+    return response
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -45,6 +50,7 @@ function App() {
               blogs={blogs}
               setMessage={setMessage}
               blogFormRef={blogFormRef}
+              createBlogEntry={createBlogEntry}
             />
           </Togglable>
           <button style={{ margin: '5px' }} onClick={sortBlogs}>

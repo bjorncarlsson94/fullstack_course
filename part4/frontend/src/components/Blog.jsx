@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import blogService from '../services/blogService'
 
-const Blog = ({ blog, user, blogs, setBlogs }) => {
+const Blog = ({ blog, user, setBlogs, mockHandler }) => {
+  const [info, setInfo] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
@@ -13,7 +14,7 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
     marginBottom: 5,
     display: 'flex',
   }
-  const showDelete = user.username === blog.user.username
+  let showDelete = !!blog.user ? user.username === blog.user.username : false
 
   const handleLike = async (event) => {
     event.preventDefault()
@@ -38,17 +39,19 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
     }
   }
 
-  const [info, setInfo] = useState(false)
   return (
     <div style={blogStyle}>
       <button
         style={{ marginLeft: '20px', marginRight: '10px' }}
-        onClick={() => setInfo(!info)}
+        onClick={() => {
+          setInfo(!info)
+          //mockHandler()
+        }}
       >
         {!info ? 'view' : 'close'}
       </button>
       {!info ? (
-        <div>
+        <div id="blog-info">
           {blog.title} {blog.author}
         </div>
       ) : (
@@ -57,12 +60,18 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
           <div>{blog.author}</div>
           <div>{blog.url}</div>
           <div>
-            {likes}
-            <button style={{ marginLeft: '15px' }} onClick={handleLike}>
+            {likes} likes
+            <button
+              style={{ marginLeft: '15px' }}
+              onClick={(event) => {
+                handleLike(event)
+                //mockHandler()
+              }}
+            >
               Like
             </button>
           </div>
-          <div>{blog.user.name}</div>
+          <div>{/*blog.user.name*/}</div>
           {showDelete ? (
             <button style={{ marginLeft: '15px' }} onClick={handleDelete}>
               Delete blog

@@ -12,11 +12,14 @@ export default [
       globals: {
         ...globals.node,
       },
+      browser: true,
       ecmaVersion: 'latest',
+      'vitest-globals/env': true,
     },
     plugins: {
       '@stylistic/js': stylisticJs,
     },
+    extends: ['eslint:recommends', 'plugin:vitest-globals/recommended'],
     rules: {
       '@stylistic/js/indent': ['error', 2],
       '@stylistic/js/linebreak-style': ['error', 'unix'],
