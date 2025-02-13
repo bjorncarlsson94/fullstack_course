@@ -29,7 +29,7 @@ const Note = ({
   }
   return (
     <li className="note">
-      {note.content}
+      <span>{note.content}</span>
       <button style={{ marginLeft: '15px' }} onClick={toggleImportance}>
         {label}
       </button>

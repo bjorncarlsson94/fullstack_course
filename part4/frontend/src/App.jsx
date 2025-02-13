@@ -26,12 +26,22 @@ function App() {
     }
   }, [])
   const sortBlogs = () => {
-    setBlogs((prevBlogs) => [...prevBlogs].sort((a, b) => b.likes - a.likes))
+    let sortedBlogs = [...blogs.sort((a, b) => b.likes - a.likes)]
+    setBlogs(sortedBlogs) //(prevBlogs) => [...prevBlogs].sort((a, b) => b.likes - a.likes))
   }
 
   const createBlogEntry = async (blogObject) => {
     const response = await blogService.create(blogObject)
     return response
+  }
+  const updateBlogLikes = (blogToUpdate) => {
+    setBlogs((prevBlogs) =>
+      prevBlogs.map((blog) =>
+        blog.id === blogToUpdate.id
+          ? { ...blog, likes: blogToUpdate.likes }
+          : blog
+      )
+    )
   }
 
   return (
@@ -57,7 +67,13 @@ function App() {
             Sort Blogs
           </button>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} user={user} setBlogs={setBlogs} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              user={user}
+              setBlogs={setBlogs}
+              updateBlogLikes={updateBlogLikes}
+            />
           ))}
         </div>
       )}

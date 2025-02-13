@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import blogService from '../services/blogService'
 
-const Blog = ({ blog, user, setBlogs, mockHandler }) => {
+const Blog = ({ blog, user, setBlogs, mockHandler, updateBlogLikes }) => {
   const [info, setInfo] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
   const blogStyle = {
     paddingTop: 10,
@@ -19,10 +18,10 @@ const Blog = ({ blog, user, setBlogs, mockHandler }) => {
   const handleLike = async (event) => {
     event.preventDefault()
 
-    const blogToUpdate = { ...blog, user: blog.user.id, likes: likes + 1 }
+    const blogToUpdate = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
     try {
       await blogService.update(blogToUpdate)
-      setLikes(blogToUpdate.likes)
+      updateBlogLikes(blogToUpdate)
     } catch (exception) {
       console.log('Failed to update the blog')
     }
@@ -40,7 +39,7 @@ const Blog = ({ blog, user, setBlogs, mockHandler }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <button
         style={{ marginLeft: '20px', marginRight: '10px' }}
         onClick={() => {
@@ -51,7 +50,7 @@ const Blog = ({ blog, user, setBlogs, mockHandler }) => {
         {!info ? 'view' : 'close'}
       </button>
       {!info ? (
-        <div id="blog-info">
+        <div id="blog-info" className="blogInfo">
           {blog.title} {blog.author}
         </div>
       ) : (
@@ -60,7 +59,7 @@ const Blog = ({ blog, user, setBlogs, mockHandler }) => {
           <div>{blog.author}</div>
           <div>{blog.url}</div>
           <div>
-            {likes} likes
+            {blog.likes} likes
             <button
               style={{ marginLeft: '15px' }}
               onClick={(event) => {

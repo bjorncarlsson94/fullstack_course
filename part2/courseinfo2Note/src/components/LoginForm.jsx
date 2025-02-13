@@ -2,13 +2,6 @@ import { useState } from 'react'
 import loginService from '../services/login'
 import noteService from '../services/notes'
 import PropTypes from 'prop-types'
-LoginForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  handleUsernameChange: PropTypes.func.isRequired,
-  handlePasswordChange: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-}
 
 const LoginForm = ({ setUser, setErrorMessage }) => {
   const [username, setUsername] = useState('')
@@ -39,6 +32,7 @@ const LoginForm = ({ setUser, setErrorMessage }) => {
       <div>
         username
         <input
+          data-testid="username"
           type="text"
           value={username}
           name="Username"
@@ -48,6 +42,7 @@ const LoginForm = ({ setUser, setErrorMessage }) => {
       <div>
         password
         <input
+          data-testid="password"
           type="password"
           value={password}
           name="Password"
@@ -57,5 +52,13 @@ const LoginForm = ({ setUser, setErrorMessage }) => {
       <button type="submit">login</button>
     </form>
   )
+}
+
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
 }
 export default LoginForm

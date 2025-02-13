@@ -9,7 +9,9 @@
     "test": "NODE_ENV=dev node --test",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:test": "NODE_ENV=test node index.js"
+
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

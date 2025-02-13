@@ -9,7 +9,9 @@
     "test": "cross-env NODE_ENV=dev node --test",
     "build:ui": "rm -rf dist && cd ../../part2/courseInfo2Note && npm run build && pwd && cp -r dist ../../Part3/notesBackEnd_fullstack/",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:test": "NODE_ENV=test node index.js"
+
   },
   "author": "Bjorn Carlsson",
   "license": "MIT",
