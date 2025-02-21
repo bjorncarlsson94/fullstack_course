@@ -17,7 +17,7 @@ const useField = (type) => {
 
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
-  useEffect(() => {
+  if (resources.length === 0) {
     axios
       .get(baseUrl)
       .then((res) => {
@@ -27,7 +27,7 @@ const useResource = (baseUrl) => {
       .catch(() => {
         console.log('error with GET')
       })
-  }, [resources])
+  }
 
   const create = async (resource) => {
     const response = await axios.post(baseUrl, resource)

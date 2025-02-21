@@ -15,6 +15,10 @@
     {
       "content": "adding a note",
       "id": 4
+    },
+    {
+      "content": "new note without useEffect",
+      "id": 5
     }
   ],
   "persons": [
