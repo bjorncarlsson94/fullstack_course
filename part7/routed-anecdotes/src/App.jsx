@@ -7,6 +7,8 @@ import About from '../components/About'
 import Anecdote from '../components/Anecdote'
 import Notification from '../components/Notification'
 import { Route, Routes, useMatch } from 'react-router-dom'
+import { Container } from '@mui/material'
+import styled from 'styled-components'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -55,22 +57,28 @@ const App = () => {
     ? anecdotes.find((anecdote) => anecdote.id === Number(match.params.id))
     : null
 
+  const Page = styled.div`
+    padding: 1em;
+    background: papayawhip;
+  `
   return (
-    <div>
-      <h1>Software anecdotes</h1>
-      <Menu />
-      <Notification notification={notification} />
-      <Routes>
-        <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route
-          path="/anecdotes/:id"
-          element={<Anecdote anecdote={anecdote} />}
-        />
-        <Route path="about" element={<About />} />
-        <Route path="create" element={<CreateNew addNew={addNew} />} />
-      </Routes>
-      <Footer />
-    </div>
+    <Page>
+      <Container>
+        <h1>Software anecdotes</h1>
+        <Menu />
+        <Notification notification={notification} />
+        <Routes>
+          <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+          <Route
+            path="/anecdotes/:id"
+            element={<Anecdote anecdote={anecdote} />}
+          />
+          <Route path="about" element={<About />} />
+          <Route path="create" element={<CreateNew addNew={addNew} />} />
+        </Routes>
+        <Footer />
+      </Container>
+    </Page>
   )
 }
 

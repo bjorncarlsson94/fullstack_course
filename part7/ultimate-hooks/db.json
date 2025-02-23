@@ -19,6 +19,10 @@
     {
       "content": "new note without useEffect",
       "id": 5
+    },
+    {
+      "content": "adding one",
+      "id": 6
     }
   ],
   "persons": [
@@ -36,6 +40,11 @@
       "name": "new person",
       "number": "871591659",
       "id": 3
+    },
+    {
+      "name": "new person",
+      "number": "1235153151",
+      "id": 4
     }
   ]
 }
