@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJqb3JuIiwiaWQiOiI2N2FlNWE5OTEzZWJiNzJmNGMwYzQzNTkiLCJpYXQiOjE3NDA1MTgyOTl9.kCy5ClY9BTAZpTh5wXBvPL6hIZEBA2NHSigQIpAmXio
+Authorization: 
 
 {
     "title": "final test one",
@@ -28,7 +28,7 @@ Content-Type: application/json
 
 POST http://localhost:3001/api/blogs/67be4ee17c2afdfef42fffaf/comments
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJqb3JuIiwiaWQiOiI2N2FlNWE5OTEzZWJiNzJmNGMwYzQzNTkiLCJpYXQiOjE3NDA1MjAzODJ9.El1N5PaLZeV-5Fqmo7FglGF6Sgfl0tIXDYeQqSVWwi4
+Authorization: 
 
 
 {
