@@ -31,11 +31,8 @@ const update = async (blogChange) => {
   const config = {
     headers: { Authorization: token },
   }
-  const response = await axios.put(
-    `${baseUrl}/${blogChange.id}`,
-    blogChange,
-    config
-  )
+  const blogId = blogChange.id
+  const response = await axios.patch(`${baseUrl}/${blogId}`, blogChange, config)
   return response.data
 }
 const deleteBlog = async (blogId) => {
@@ -45,5 +42,25 @@ const deleteBlog = async (blogId) => {
   const response = await axios.delete(`${baseUrl}/${blogId}`, config)
   return response.data
 }
+const addComment = async ({ blog }, comment) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const blogId = blog.id
+  const response = await axios.post(
+    `${baseUrl}/${blogId}/comments`,
+    { comment },
+    config
+  )
+  return response.data
+}
 
-export default { getAll, setToken, create, update, getOne, deleteBlog }
+export default {
+  getAll,
+  setToken,
+  create,
+  update,
+  getOne,
+  deleteBlog,
+  addComment,
+}

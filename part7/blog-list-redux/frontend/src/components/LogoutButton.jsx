@@ -1,19 +1,21 @@
 import { useDispatch } from 'react-redux'
 import { logoutUser } from '../reducers/loginReducer'
+import { Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
-const LogoutButton = ({ setUser, setUsername, setPassword }) => {
+const LogoutButton = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const handleLogout = async (event) => {
     event.preventDefault()
     dispatch(logoutUser())
+    navigate('/login')
   }
   return (
-    <div style={{ margin: '5px' }}>
-      <button type="submit" onClick={handleLogout}>
-        Logout
-      </button>
-    </div>
+    <Button variant="outline" type="submit" onClick={handleLogout}>
+      Logout
+    </Button>
   )
 }
 export default LogoutButton

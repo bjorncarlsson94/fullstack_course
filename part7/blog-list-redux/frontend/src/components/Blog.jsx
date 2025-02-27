@@ -1,88 +1,81 @@
-import { useState, useEffect } from 'react'
-import { deleteBlog } from '../reducers/blogReducer'
-import { useDispatch } from 'react-redux'
-import { addNotification } from '../reducers/notificationReducer'
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+} from '@mui/material'
+import Comment from './Comment'
 
-const Blog = ({ blog, user, mockHandler, updateBlogLikes }) => {
-  const [info, setInfo] = useState(false)
-  const dispatch = useDispatch()
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    paddingBottom: 10,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-    display: 'flex',
-  }
-  let showDelete = !!blog.user ? user.username === blog.user.username : false
-
+const Blog = ({ blog, user, updateBlogLikes }) => {
   const handleLike = async (event) => {
     event.preventDefault()
 
     const blogToUpdate = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
     try {
-      //await blogService.update(blogToUpdate)
       updateBlogLikes(blogToUpdate)
     } catch (exception) {
       console.log('Failed to update the blog')
     }
   }
-  const handleDelete = async (event) => {
-    event.preventDefault()
-    if (window.confirm(`Do you want to delete: ${blog.title}`)) {
-      try {
-        dispatch(deleteBlog(blog))
-        dispatch(addNotification('Blog deleted', 5))
-      } catch (exception) {
-        console.log('Failed to iniate deletion.')
-      }
-    }
-  }
-
   return (
-    <div style={blogStyle} className="blog">
-      <button
-        style={{ marginLeft: '20px', marginRight: '10px' }}
-        onClick={() => {
-          setInfo(!info)
-          //mockHandler()
+    <div>
+      <h2>{blog.title}</h2>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+          alignItems: 'left',
+          marginBottom: '20px',
         }}
       >
-        {!info ? 'view' : 'close'}
-      </button>
-      {!info ? (
-        <div id="blog-info" className="blogInfo">
-          {blog.title} {blog.author}
+        <a href={blog.url}>{blog.url}</a>
+        <strong>Added by: {user.name}</strong>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '15px',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ border: 'solid black', padding: '5px' }}>
+          {blog.likes}
         </div>
-      ) : (
-        <div>
-          <div>{blog.title}</div>
-          <div>{blog.author}</div>
-          <div>{blog.url}</div>
-          <div>
-            {blog.likes} likes
-            <button
-              style={{ marginLeft: '15px' }}
-              onClick={(event) => {
-                handleLike(event)
-                //mockHandler()
-              }}
-            >
-              Like
-            </button>
-          </div>
-          <div>{/*blog.user.name*/}</div>
-          {showDelete ? (
-            <button style={{ marginLeft: '15px' }} onClick={handleDelete}>
-              Delete blog
-            </button>
-          ) : (
-            ''
-          )}
-        </div>
-      )}
+        <Button variant="contained" onClick={handleLike}>
+          Like
+        </Button>
+      </Box>
+      <Divider
+        sx={{ borderWidth: 1, borderColor: 'black', marginTop: '15px' }}
+      />
+      <h3>Comments</h3>
+      <Comment blog={blog} />
+      <TableContainer component={Paper} sx={{ marginTop: '25px' }}>
+        <Table>
+          <TableBody>
+            {blog.comments.length > 0 ? (
+              blog.comments.map((comment) => (
+                <TableRow key={comment.id}>
+                  <TableCell>{comment.content}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell>
+                  <div>No comments</div>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   )
 }

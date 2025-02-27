@@ -1,19 +1,25 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
+import Blogs from './components/Blogs'
+import NewBlog from './components/NewBlog'
+import NavigationMenu from './components/NavigationMenu'
+import Togglable from './components/Togglable'
 import blogService from './services/blogService'
 import LoginForm from './components/LoginForm'
-import LogoutButton from './components/LogoutButton'
-import BlogForm from './components/NewBlog'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, createBlog, likeBlog } from './reducers/blogReducer'
 import { addNotification } from './reducers/notificationReducer'
+import { Route, Routes, useMatch } from 'react-router-dom'
+import Users from './components/Users'
+import User from './components/User'
+import { initializeUsers } from './reducers/usersReducer'
+import { Container } from '@mui/material'
 
 function App() {
-  // const [user, setUser] = useState(null)
   const blogFormRef = useRef()
   const dispatch = useDispatch()
+
   const user = useSelector((state) => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogUser')
     if (loggedUserJSON) {
@@ -26,19 +32,20 @@ function App() {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [])
-
   const blogs = useSelector(({ blogs }) => {
     if (!!blogs) {
       return blogs
     }
     return []
   })
-
-  const sortBlogs = () => {
-    let sortedBlogs = [...blogs.sort((a, b) => b.likes - a.likes)]
-    //setBlogs(sortedBlogs) //(prevBlogs) => [...prevBlogs].sort((a, b) => b.likes - a.likes))
-  }
+  const users = useSelector(({ users }) => {
+    if (!!users) {
+      return users
+    }
+    return []
+  })
 
   const createBlogEntry = (blogObject) => {
     dispatch(createBlog(blogObject))
@@ -48,36 +55,64 @@ function App() {
     dispatch(addNotification(`You've liked: ${blogToUpdate.title}`, 5))
   }
 
+  const matchUser = useMatch('/users/:id')
+  const matchedUser = matchUser
+    ? users.find((u) => {
+        return u.id === matchUser.params.id
+      })
+    : null
+  const matchBlog = useMatch('/blogs/:id')
+  const matchedBlog = matchBlog
+    ? blogs.find((b) => {
+        return b.id === matchBlog.params.id
+      })
+    : null
+
   return (
-    <div>
-      <h2>blogs</h2>
-      <Notification />
-      {!user?.token ? (
-        <LoginForm />
+    <Container>
+      <NavigationMenu />
+      {!user ? (
+        <>
+          <Routes>
+            <Route path="/login" element={!user ? <LoginForm /> : null} />
+          </Routes>
+        </>
       ) : (
         <div>
-          {user.name} logged in
-          <LogoutButton />
-          <Togglable buttonLabel={'Add new blog'} ref={blogFormRef}>
-            <BlogForm
-              blogFormRef={blogFormRef}
-              createBlogEntry={createBlogEntry}
+          <Notification />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <h2>Blogs</h2>
+                  <Togglable buttonLabel={'Add new blog'} ref={blogFormRef}>
+                    <NewBlog
+                      blogFormRef={blogFormRef}
+                      createBlogEntry={createBlogEntry}
+                    />
+                  </Togglable>
+                  <Blogs blogs={blogs} user={user} />
+                </>
+              }
             />
-          </Togglable>
-          <button style={{ margin: '5px' }} onClick={sortBlogs}>
-            Sort Blogs
-          </button>
-          {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user}
-              updateBlogLikes={updateBlogLikes}
+            <Route
+              path="/blogs/:id"
+              element={
+                <Blog
+                  //key={matchedBlog.id}
+                  blog={matchedBlog}
+                  user={user}
+                  updateBlogLikes={updateBlogLikes}
+                />
+              }
             />
-          ))}
+            <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<User user={matchedUser} />} />
+          </Routes>
         </div>
       )}
-    </div>
+    </Container>
   )
 }
 
